@@ -1,6 +1,3 @@
-# aws-rds-demo
-[Advanced] - Connecting to AWD RDS PostgreSQL instance and creating CRUD Operations
-
 # AWS RDS Demo
 
 ## What is AWS RDS
@@ -70,7 +67,7 @@ const config =  require('../config.json')
 ```
 const { table, host, database, user, password, port } = config
 ```
-4. Create new clien object 
+4. Create new client object 
 ```js
 const Client =  new  Pool({
   host,
@@ -80,4 +77,49 @@ const Client =  new  Pool({
   port,
   idleTimeoutMillis: 1000
 });
+```
+5. Create a `SELECT` query and save it into a variable
+```js
+let getAllMovies =  "SELECT * FROM " + table +  ";";
+```
+6. Your get handler function should look like the following: 
+``` js
+module.exports.get  = (event, context, callback) => {
+
+  Client.connect()
+    .then(client  => {
+      console.log('connected to DB ' +  Client.options.database)
+      client.release()
+      return client.query(getAllMovies)
+
+    })
+    .then(res  => {
+      const response = {
+        statusCode: 200,
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true
+        },
+        body: JSON.stringify(res.rows),
+      }
+      callback(null, response);
+      console.log('Your connection will now be terminated')
+    })
+    .catch(e  => {
+      console.log('error', e)
+      const response = {
+        statusCode: 500,
+        headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true
+      },
+
+      body: JSON.stringify(e)
+
+      }
+
+    callback(null, response);
+
+  });
+};
 ```
