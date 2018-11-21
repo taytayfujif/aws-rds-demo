@@ -26,7 +26,7 @@ GRANT your_user TO jrdevleague;
 8. Insert data for one student
 9. Grant table privileges to user
 ```
-     GRANT ALL PRIVILEGES ON TABLE YOUR_TABLE_NAME TO YOUR_USERNAME;
+GRANT ALL PRIVILEGES ON TABLE YOUR_TABLE_NAME TO YOUR_USERNAME;
 ```
 
 ## Serverless Setup
@@ -42,13 +42,12 @@ GRANT your_user TO jrdevleague;
 
 ```json
 {
-
-"table": "YOUR_TABLE_NAME",
-"host": "jrdevleague.cb9co1xxtizk.us-west-2.rds.amazonaws.com",
-"database": "YOUR_DATABASE_NAME",
-"user": "YOUR_USERNAME",
-"password": "YOUR_PASSWORD",
-"port": 5432
+  "table": "YOUR_TABLE_NAME",
+  "host": "jrdevleague.cb9co1xxtizk.us-west-2.rds.amazonaws.com",
+  "database": "YOUR_DATABASE_NAME",
+  "user": "YOUR_USERNAME",
+  "password": "YOUR_PASSWORD",
+  "port": 5432
 }
 ```
 
@@ -80,12 +79,13 @@ const Client =  new  Pool({
 ```
 5. Create a `SELECT` query and save it into a variable
 ```js
-let getAllMovies =  "SELECT * FROM " + table +  ";";
+const getAllMovies =  "SELECT * FROM " + table +  ";";
 ```
 6. Your get handler function should look like the following: 
 ``` js
 module.exports.get  = (event, context, callback) => {
-
+  const getAllMovies =  "SELECT * FROM " + table +  ";";
+  
   Client.connect()
     .then(client  => {
       console.log('connected to DB ' +  Client.options.database)
