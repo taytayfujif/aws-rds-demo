@@ -66,9 +66,9 @@ const config =  require('../config.json')
 ```
 const { table, host, database, user, password, port } = config
 ```
-4. Create new client object 
+4. Create new pool object 
 ```js
-const Client =  new  Pool({
+const pool =  new  Pool({
   host,
   database,
   user,
@@ -77,49 +77,53 @@ const Client =  new  Pool({
   idleTimeoutMillis: 1000
 });
 ```
+
 5. Create a `SELECT` query and save it into a variable
+
 ```js
 const getAllMovies =  "SELECT * FROM " + table +  ";";
 ```
-6. Your get handler function should look like the following: 
+6. Use `pool.connect()` to connect to database
+7. Within the response use `client.release()` to open up database for query
+8. Run `return client.query(YOUR_QUERY)` to make your query
+9. Your get handler function should look like the following: 
 ``` js
 module.exports.get  = (event, context, callback) => {
-  const getAllMovies =  "SELECT * FROM " + table +  ";";
-  
-  Client.connect()
-    .then(client  => {
-      console.log('connected to DB ' +  Client.options.database)
-      client.release()
-      return client.query(getAllMovies)
 
-    })
-    .then(res  => {
-      const response = {
+  const getAllMovies =  "SELECT * FROM " + table +  ";";
+
+    pool.connect()
+      .then(client  => {
+          client.release()
+          return client.query(getAllMovies)
+      })
+      .then(res  => {
+        const response = {
         statusCode: 200,
         headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true
         },
-        body: JSON.stringify(res.rows),
+        body: JSON.stringify(res.rows)
       }
       callback(null, response);
-      console.log('Your connection will now be terminated')
     })
-    .catch(e  => {
-      console.log('error', e)
-      const response = {
-        statusCode: 500,
-        headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true
-      },
 
-      body: JSON.stringify(e)
-
-      }
-
+  .catch(error  => {
+    console.log('error', error)
+    const response = {
+     statusCode: 500,
+     headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Credentials": true
+    },
+    body: JSON.stringify(error)
+  }
     callback(null, response);
-
   });
 };
+
 ```
+10. Invoke function or run GET endpoint in Postman
+
+## POST Lambda Function 
