@@ -186,6 +186,7 @@ module.exports.post = (event, context, callback) => {
 ## Class Exercise
 
 - Implement Put & Delete functions
+
 [Update Query Documentation](https://www.postgresql.org/docs/11/sql-update.html)
 
 [PostgreSQL: Documentation: 11: DELETE](https://www.postgresql.org/docs/11/sql-delete.html)
