@@ -183,10 +183,17 @@ module.exports.post = (event, context, callback) => {
         });
 };
 ```
+## Class Exercise
+- Implement Put & Delete method
+[Update Query Documentation](https://www.postgresql.org/docs/11/sql-update.html)
+
+[PostgreSQL: Documentation: 11: DELETE](https://www.postgresql.org/docs/11/sql-delete.html)
 
 
+## Resources
+[What Is Amazon Relational Database Service (Amazon RDS)? - Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html)
 
-
+[pg-pool](https://www.npmjs.com/package/pg-pool)
 
 
 
