@@ -138,7 +138,7 @@ module.exports.get = (event, context, callback) => {
 ## POST Lambda Function 
 1. Allow permission to your table name
 ```
-GRANT USAGE, SELECT ON SEQUENCE TABLE_NAME_id_seq TO jay;
+GRANT USAGE, SELECT ON SEQUENCE TABLE_NAME_id_seq TO YOUR_USERNAME;
 ```
 2. Add `integration: lambda` under `cors: true` of your post function in `serverless.yml`
 3. Create insert query
