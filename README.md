@@ -45,6 +45,7 @@ iamRoleStatements:
   - set up your http method
   - set up your http path
   - set up your cors
+  
 6.`npm install pg pg-pool`
 7. Create config.json file with the following: 
 
